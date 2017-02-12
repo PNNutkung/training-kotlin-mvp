@@ -1,5 +1,6 @@
 package com.example.nut.trainingmvp.home
 
+import com.example.nut.trainingmvp.models.Apis
 import com.example.nut.trainingmvp.models.Film
 import com.example.nut.trainingmvp.models.FilmResponse
 import com.example.nut.trainingmvp.models.StarWarsApi
@@ -7,11 +8,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-/**
- * Created by nut on 2/11/17.
- */
 class HomePresenter(val view: HomeContract.HomeView): HomeContract.HomePresenter {
-    lateinit var starWarsApi: StarWarsApi
+    var starWarsApi: StarWarsApi = Apis().getStarWarsApi()
 
     init {
         view.showTitle("All Star Wars Films")

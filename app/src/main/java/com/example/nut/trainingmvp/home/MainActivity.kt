@@ -10,12 +10,8 @@ import com.example.nut.trainingmvp.models.Film
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), HomeContract.HomeView {
-    val presenter: HomePresenter = HomePresenter(this)
-    val filmAdapter = FilmAdapter(null, object : FilmAdapter.OnFilmClickListener {
-        override fun onFilmClick(film: Film) {
-            presenter.onFilmItemClicked(film)
-        }
-    })
+    lateinit var presenter: HomePresenter
+    lateinit var filmAdapter: FilmAdapter
 
     override fun showLoading() {
         srl.isRefreshing = true
@@ -44,9 +40,16 @@ class MainActivity : AppCompatActivity(), HomeContract.HomeView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        filmAdapter = FilmAdapter(listOf(element = Film()), object : FilmAdapter.OnFilmClickListener {
+            override fun onFilmClick(film: Film) {
+                presenter.onFilmItemClicked(film)
+            }
+        })
         rvFilms.layoutManager = LinearLayoutManager(this)
         rvFilms.adapter = filmAdapter
         srl.setOnRefreshListener { presenter.getAllFilms() }
+
+        presenter = HomePresenter(this)
         presenter.getAllFilms()
     }
 }
